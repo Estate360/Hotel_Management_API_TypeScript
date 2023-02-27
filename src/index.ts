@@ -9,7 +9,7 @@ import roomTypesRouter from "./routes/roomTypeRoutes";
 import express, { Application, NextFunction, Request, Response } from "express";
 
 const app: Application = express();
-const port = process.env.PORT || 8800;
+const port = process.env.PORT || 5000;
 
 //Global Middleware
 app.use(cors()); // allow cross-origin request
