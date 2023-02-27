@@ -30,7 +30,7 @@ To use this API, you will need to have Node.js and MongoDB installed on your com
 
 The API provides the following endpoints:
 
-  ### Authentication Methods
+### Authentication Methods
 
 - POST /api/v1/users/register:
   Creates/registers a new user
@@ -45,7 +45,7 @@ The API provides the following endpoints:
 - DELETE /api/v1/user/:id :
   Deletes a user
 
-  ### Room types Methods
+### Room types Methods
 
 - POST /api/v1/rooms-types:
   Creates a new room
