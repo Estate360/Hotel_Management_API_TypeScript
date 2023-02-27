@@ -57,7 +57,6 @@ The API provides the following endpoints:
   Updates a room type info
 - DELETE /api/v1/room-type/:id :
   Deletes a room type by ID
-
 NOTE: This Room Type method is all restricted to only authenticated users who are Admins
 
 ### Rooms Methods
