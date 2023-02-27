@@ -51,8 +51,16 @@ The API provides the following endpoints:
   Creates a new room
 - GET /api/v1/rooms-types:
   Gets all available rooms types
+- GET /api/v1/room-type/:id :
+  Gets a a particular room-type by ID
+- PATCH /api/v1/room-type/:id :
+  Updates a room type info
+- DELETE /api/v1/room-type/:id :
+  Deletes a room type by ID
 
-  ### Rooms Methods
+NOTE: This Room Type method is all restricted to only authenticated users who are Admins
+
+### Rooms Methods
 
 - POST /api/v1/rooms:
   Creates a new room
@@ -60,9 +68,9 @@ The API provides the following endpoints:
   Gets all available rooms
 - GET /api/v1/room/:id :
   Gets a a particular room by ID
-- PATCH /api/v1/user/:id :
+- PATCH /api/v1/room/:id :
   Updates a room's info
-- DELETE /api/v1/user/:id :
+- DELETE /api/v1/room/:id :
   Deletes a room by ID
 
 ## Contributing
