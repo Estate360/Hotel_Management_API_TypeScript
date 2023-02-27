@@ -3,9 +3,9 @@ import bcrypt from "bcrypt";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { catchAsync } from "../utils/catchAsync";
 import { User, userValidator } from "../models/user";
+import { IUserDoc } from "../interfaces/userInterface";
 import AppErrorHandler from "../utils/AppErrorHandler";
 import { Request, Response, NextFunction } from "express";
-import { IUserDoc } from "../interfaces/userInterface";
 
 interface CustomRequest extends Request {
   user?: any;
