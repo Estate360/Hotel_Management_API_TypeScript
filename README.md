@@ -1,4 +1,5 @@
 # Hotel_Management_API_TypeScript
+
 This is my first application of Typescript in NodeJs
 
 Hotel Management API (TypeScript)
@@ -13,19 +14,24 @@ This is a RESTful API built with [TypeScript](https://www.typescriptlang.org/), 
 
 Getting Started
 To use this API, you will need to have Node.js and MongoDB installed on your computer. Then, follow these steps:
-1. Clone this repository to your local machine:
-git clone https://github.com/Estate360/Hotel_Management_API_TypeScript.git
-2. Install the required dependencies:
-cd Hotel_Management_API_TypeScript
-npm install
-3. Start the server:
-npm start
-4. The server will start running at http://localhost:8000 or http://localhost:5000. You can now use this API to perform various actions.
+
+1. Run `git clone https://github.com/Estate360/Hotel_Management_API_TypeScript.git` to clone the repository to your local machine.
+
+2. Run `cd Hotel_Management_API_TypeScript` to navigate to the cloned repository directory.
+3. Install the required dependencies:
+
+4. Run `npm install` to install the required dependencies.
+   npm start
+
+5. Run `npm start` to start the server.
+   The server will start running at http://localhost:8000 or http://localhost:5000. You can now use this API to perform various actions.
 
 ## API Endpoints
 
 The API provides the following endpoints:
+
 ### Authentication Methods
+
 - POST /api/v1/users/register:
   Creates/registers a new user
 - POST /api/v1/users/login:
@@ -40,12 +46,14 @@ The API provides the following endpoints:
   Deletes a user
 
   ### Room types Methods
+
 - POST /api/v1/rooms-types:
   Creates a new room
 - GET /api/v1/rooms-types:
   Gets all available rooms types
 
   ### Rooms Methods
+
 - POST /api/v1/rooms:
   Creates a new room
 - GET /api/v1/rooms:
