@@ -140,28 +140,6 @@ export const protect = catchAsync(
   }
 );
 
-// interface AuthenticatedRequest extends Request {
-//   user: {
-//     role: string;
-//     // other properties of user object
-//   };
-// }
-
-// export const restrictTo =
-//   (...roles: string[]) =>
-//   (req: Request, res: Response, next: NextFunction) => {
-//     const authReq = req as AuthenticatedRequest;
-//     if (!authReq.user || !roles.includes(authReq.user.role)) {
-//       return next(
-//         new AppErrorHandler(
-//           "You do not have permission to perform this action",
-//           403
-//         )
-//       );
-//     }
-//     next();
-//   };
-
 export const restrictTo =
   (role: string) => (req: CustomRequest, res: Response, next: NextFunction) => {
     if (!role.includes(req.user.role)) {
