@@ -30,7 +30,7 @@ To use this API, you will need to have Node.js and MongoDB installed on your com
 
 The API provides the following endpoints:
 
-### Authentication Methods
+  ### Authentication Methods
 
 - POST /api/v1/users/register:
   Creates/registers a new user
