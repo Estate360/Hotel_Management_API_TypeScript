@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-
   "scripts": {
-    "build":"tsc",
-    "start": "ts-node-dev src/index.ts"
+    "build": "tsc",
+    "start": "node src/index.js",
+    "start-dev": "ts-node-dev src/index.ts"
   },
   "keywords": [],
   "author": "",
