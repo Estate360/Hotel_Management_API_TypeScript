@@ -24,9 +24,6 @@ const roomSchema = new Schema<IRoom>(
   }
 );
 
-// remove unique index on price field
-// roomSchema.index({ price: 1 }, { unique: false });
-
 const Room = mongoose.model<IRoom>("Room", roomSchema);
 
 export default Room;

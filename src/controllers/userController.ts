@@ -17,9 +17,15 @@ export const getOneUser = catchAsync(
     const user = await User.findById(req.params.id);
 
     if (!user) {
-      return next(
-        new AppErrorHandler(`No User found with the ID: ${req.params.id}`, 404)
+      const appError = new AppErrorHandler(
+        `No User found with the ID: ${req.params.id}`,
+        404
       );
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
     }
 
     res.status(200).json({
@@ -58,10 +64,17 @@ export const updateUser = catchAsync(
       runValidators: true,
     });
 
-    if (!user)
-      return next(
-        new AppErrorHandler(`User with ID: ${req.params.id} not found!`, 404)
+    if (!user) {
+      const appError = new AppErrorHandler(
+        `User with ID: ${req.params.id} not found!`,
+        404
       );
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
+    }
 
     res.status(200).json({
       message: "user updated successfully",
@@ -77,13 +90,17 @@ export const updateUser = catchAsync(
 export const deleteUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = await User.findByIdAndDelete(req.params.id);
-    if (!user)
-      return next(
-        new AppErrorHandler(
-          `No user found with the ID: ${req.params.id}. Not deleted!`,
-          404
-        )
+    if (!user) {
+      const appError = new AppErrorHandler(
+        `No user found with the ID: ${req.params.id}. Not deleted!`,
+        404
       );
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
+    }
 
     res.status(200).json({
       message: `user with the ID: ${user} deleted`,

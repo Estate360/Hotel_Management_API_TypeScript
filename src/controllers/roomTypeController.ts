@@ -23,13 +23,18 @@ export const findOneRoomType = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const room = await RoomType.findById(req.params.id);
 
-    if (!room)
-      return next(
-        new AppErrorHandler(
-          `This room ID: ${req.params.id} does not exist`,
-          404
-        )
+    if (!room) {
+      const appError = new AppErrorHandler(
+        `This room-type ID: ${req.params.id} does not exist`,
+        404
       );
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
+    }
+    next();
     res.status(200).json({
       message: "Room Type found",
       status: "success",
@@ -64,10 +69,18 @@ export const updateRoomType = catchAsync(
       runValidators: true,
     });
 
-    if (!room)
-      return next(
-        new AppErrorHandler(`No room-type found with the ID: ${req.params.id}`, 404)
+    if (!room) {
+      const appError = new AppErrorHandler(
+        `No room-type found with the ID: ${req.params.id}`,
+        404
       );
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
+    }
+    next();
 
     res.status(200).json({
       message: "Room Types Updated",
@@ -84,13 +97,17 @@ export const deleteRoomType = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const room = await RoomType.findByIdAndDelete(req.params.id);
 
-    if (!room)
-      return next(
-        new AppErrorHandler(
-          `No room-type found with the ID: ${req.params.id}; \ndoes not exit`,
-          404
-        )
+    if (!room) {
+      const appError = new AppErrorHandler(
+        `No room-type found with the ID: ${req.params.id}; \ndoes not exit`,
+        404
       );
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
+    }
 
     res.status(200).json({
       message: `${room} deleted`,

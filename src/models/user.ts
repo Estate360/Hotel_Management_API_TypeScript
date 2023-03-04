@@ -1,4 +1,4 @@
-import Joi from "joi";
+// import Joi from "joi";
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import { IUserDoc } from "../interfaces/userInterface";
@@ -58,27 +58,27 @@ userSchema.methods.checkCorrectPassword = async function (
   return await bcrypt.compare(inputtedPassword, truePassword);
 };
 
-const userValidator = Joi.object({
-  name: Joi.string()
-    .regex(/^\s*\S+(?:\s+\S+)*\s*$/)
-    .min(3)
-    .message("Name must not be below 3 characters!")
-    .required()
-    .lowercase(),
-  // .trim(),
-  email: Joi.string()
-    .email()
-    .required()
-    .label("Email space cannot be empty! Please input your email")
-    .lowercase(),
-  password: Joi.string()
-    .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
-    .min(8)
-    .required(),
-  confirmPassword: Joi.ref("password"),
-  role: Joi.string().valid("guest", "admin").default("guest"),
-});
+// const userValidator = Joi.object({
+//   name: Joi.string()
+//     .regex(/^\s*\S+(?:\s+\S+)*\s*$/)
+//     .min(3)
+//     .message("Name must not be below 3 characters!")
+//     .required()
+//     .lowercase(),
+//   // .trim(),
+//   email: Joi.string()
+//     .email()
+//     .required()
+//     .label("Email space cannot be empty! Please input your email")
+//     .lowercase(),
+//   password: Joi.string()
+//     .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+//     .min(8)
+//     .required(),
+//   confirmPassword: Joi.ref("password"),
+//   role: Joi.string().valid("guest", "admin").default("guest"),
+// });
 
 const User = mongoose.model<IUserDoc>("User", userSchema);
 
-export { User, userValidator };
+export { User };

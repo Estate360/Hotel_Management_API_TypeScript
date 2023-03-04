@@ -8,13 +8,17 @@ import { catchAsync } from "../utils/catchAsync";
 export const createRoom = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const roomType = await RoomType.findById(req.body.roomType);
-    if (!roomType)
-      return next(
-        new AppErrorHandler(
-          "Room type not found, define roomType on the body using it's ID",
-          404
-        )
+    if (!roomType) {
+      const appError = new AppErrorHandler(
+        "Room type not found, define roomType on the body using it's ID",
+        404
       );
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
+    }
 
     const room = await (
       await Room.create(req.body)
@@ -37,10 +41,18 @@ export const findOneRoom = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const room = await Room.findById(req.params.id);
 
-    if (!room)
-      return next(
-        new AppErrorHandler(`The room ID: ${req.params.id} does not exist`, 404)
+    if (!room) {
+      const appError = new AppErrorHandler(
+        `This room ID: ${req.params.id} does not exist`,
+        404
       );
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
+    }
+
     res.status(200).json({
       message: "Room found successfully",
       status: "success",
@@ -91,10 +103,17 @@ export const updateRoom = catchAsync(
       runValidators: true,
     });
 
-    if (!room)
-      return next(
-        new AppErrorHandler(`No room found with the ID: ${req.params.id}`, 404)
+    if (!room) {
+      const appError = new AppErrorHandler(
+        `The room ID: ${req.params.id} does not exist`,
+        404
       );
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
+    }
 
     res.status(200).json({
       message: "Room Types Updated successfully",
@@ -111,13 +130,17 @@ export const deleteRoom = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const room = await Room.findByIdAndDelete(req.params.id);
 
-    if (!room)
-      return next(
-        new AppErrorHandler(
-          `No room found with the ID: ${req.params.id}. Not deleted!`,
-          404
-        )
+    if (!room) {
+      const appError = new AppErrorHandler(
+        `No room found with the ID: ${req.params.id}. Not deleted!`,
+        404
       );
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
+    }
 
     res.status(200).json({
       message: `room with the ID: ${room} deleted`,

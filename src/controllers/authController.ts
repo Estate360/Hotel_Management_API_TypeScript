@@ -2,7 +2,7 @@ import Joi from "joi";
 import bcrypt from "bcrypt";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { catchAsync } from "../utils/catchAsync";
-import { User, userValidator } from "../models/user";
+import { User } from "../models/user";
 import { IUserDoc } from "../interfaces/userInterface";
 import AppErrorHandler from "../utils/AppErrorHandler";
 import { Request, Response, NextFunction } from "express";
@@ -23,16 +23,17 @@ async function verifyToken(token: string): Promise<MyTokenPayload> {
 
 export const register = catchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { error } = await userValidator.validateAsync(req.body, {
-      abortEarly: false,
-    });
-    if (error) return next(new AppErrorHandler(error.details[0].message, 400));
-
     const { email } = req.body;
+
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      res.status(409).json({ error: "User already exists" });
+      const appError = new AppErrorHandler("User already exists!", 409);
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
     }
 
     // Create new user
@@ -65,28 +66,28 @@ export const register = catchAsync(
 export const login = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
-    //validate user
-    const schema = Joi.object({
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-    });
-
-    const { error } = await schema.validateAsync(req.body, {
-      abortEarly: false,
-    });
-
-    if (error) return next(new AppErrorHandler(error.details[0].message, 400));
     // Check if user exists
     const user: IUserDoc | null = await User.findOne({ email }).select(
       "+password"
     );
-    if (!user)
-      return next(new AppErrorHandler("Invalid email or password!", 401));
+    if (!user) {
+      const appError = new AppErrorHandler("Invalid email or password!", 401);
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
+    }
 
     // Check password
     const matchPassword = await bcrypt.compare(password, user.password!);
     if (!matchPassword) {
-      return next(new AppErrorHandler("Invalid email or password!", 401));
+      const appError = new AppErrorHandler("Invalid email or password!", 401);
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
     }
 
     //If all is correct, return token
@@ -110,14 +111,17 @@ export const protect = catchAsync(
       token = req.headers.authorization.split(" ")[1];
     }
     console.log(token);
-    if (!token)
-      return next(
-        new AppErrorHandler(
-          "You are not logged in, please provide your token to gain access",
-          401
-        )
+    if (!token) {
+      const appError = new AppErrorHandler(
+        "You are not logged in, please provide your token to gain access",
+        401
       );
-
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
+    }
     //2) Verification token
     const decoded = await verifyToken(token);
     console.log(decoded.userId); // Prints the user ID from the token payload
@@ -125,17 +129,19 @@ export const protect = catchAsync(
     // 3) Check if user still exists
     const currentUser = await User.findById(decoded.userId);
     if (!currentUser) {
-      return next(
-        new AppErrorHandler(
-          "The user belonging to this token does no longer exist.",
-          401
-        )
+      const appError = new AppErrorHandler(
+        "The user belonging to this token does no longer exist.",
+        401
       );
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
     }
 
     // GRANT ACCESS TO PROTECTED ROUTE
     req.user = currentUser;
-
     next();
   }
 );
@@ -143,12 +149,15 @@ export const protect = catchAsync(
 export const restrictTo =
   (role: string) => (req: CustomRequest, res: Response, next: NextFunction) => {
     if (!role.includes(req.user.role)) {
-      return next(
-        new AppErrorHandler(
-          "You do not have permission to perform this action",
-          403
-        )
+      const appError = new AppErrorHandler(
+        "You do not have permission to perform this action",
+        403
       );
+      res.status(appError.statusCode).json({
+        status: appError.status,
+        message: appError.message,
+      });
+      return;
     }
     next();
   };

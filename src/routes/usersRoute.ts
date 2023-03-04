@@ -1,31 +1,30 @@
 import { Router } from "express";
 
+import * as authController from "../controllers/authController";
+import * as userController from "../controllers/userController";
 import {
-  login,
-  protect,
-  register,
-  restrictTo,
-} from "../controllers/authController";
-import {
-  createUser,
-  deleteUser,
-  getAllUsers,
-  getOneUser,
-  updateUser,
-} from "../controllers/userController";
+  userRegistrationValidator,
+  userLoginValidator,
+} from "../middlewares/userValidator";
 
 const router: Router = Router();
 
-router.post("/register", register);
-router.post("/login", login);
+router.post("/register", userRegistrationValidator, authController.register);
+router.post("/login", userLoginValidator, authController.login);
 
-router.route("/").get(protect, getAllUsers).post(createUser);
-router.use(protect);
+router
+  .route("/")
+  .get(authController.protect, userController.getAllUsers)
+  .post(userController.createUser);
+router.use(authController.protect);
+
+router.use(authController.protect);
+router.use(authController.restrictTo("admin"));
 router
   .route("/:id")
-  .get(getOneUser)
-  .patch(updateUser)
+  .get(userController.getOneUser)
+  .patch(userController.updateUser)
 
-  .delete(restrictTo("admin"), deleteUser);
+  .delete(userController.deleteUser);
 
 export default router;
