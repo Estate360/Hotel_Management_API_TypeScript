@@ -80,16 +80,17 @@ This API provides the following endpoints:
 - Create a new user:
   Request
   enter the following on the body;
-  {
+```json  
+{
   "name":"Will Smith",
   "email":"willsmith@gmail.com",
   "password":"0000000000",
   "confirmPassword":"0000000000"
-  }
-
+}
+```
   Response;
-
-  {
+```json
+{
   "message": "User successfully created.",
   "token": "token appears here",
   "data": {
@@ -104,13 +105,16 @@ This API provides the following endpoints:
       "__v": 0
     }
   }
-  }
+}
+```
   (By default, you get the role of "guest" except if specified)
 
   if user already exists, the error responds becomes;
-  {
+```json
+{
   "error": "User already exists"
-  }
+}
+```
 
   Note that the email and password fields are required for the login using POST link just as provided https://estate-room-ease-server.onrender.com/api/v1/users/login. You'll be provided with a token when you input the correct email and password.
 
