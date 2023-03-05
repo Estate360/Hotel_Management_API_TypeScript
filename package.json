@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
-    "start": "node src/index.js",
+    "start": "node build",
     "start-dev": "ts-node-dev --respawn --transpile-only src/index.ts"
   },
   "keywords": [],
